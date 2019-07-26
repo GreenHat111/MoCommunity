@@ -26,6 +26,9 @@ public interface QuestionMapper {
     @Select("select * from question limit #{page},#{size}")
     List<Question> paginationList(@Param("page") Integer page,@Param("size") Integer size);
 
+    @Select("select * from question where creator=#{id} limit #{page},#{size}")
+    List<Question> paginationWithIdList(@Param("id") int id,@Param("page") int page,@Param("size") int size);
+
     @Select("select count(1) from question")
     int count();
 }

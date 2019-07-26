@@ -4,6 +4,7 @@ import cn.sl.domain.Question;
 import cn.sl.domain.User;
 import cn.sl.mapper.QuestionMapper;
 import cn.sl.mapper.UserMapper;
+import cn.sl.utils.LoginUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +45,7 @@ public class PublishController {
                             HttpServletRequest request){
 
         if ("".equals(title) || "".equals(description) || "".equals(tag)) return "publish";
-        User user = getCurUser(request);
+        User user = LoginUtils.checkLogin(request,userMapper);
         if (user == null) return "index";
         Question question = new Question();
         question.setTag(tag);

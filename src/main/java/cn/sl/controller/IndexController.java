@@ -7,6 +7,7 @@ import cn.sl.dto.QuestionDto;
 import cn.sl.mapper.QuestionMapper;
 import cn.sl.mapper.UserMapper;
 import cn.sl.service.QuestionService;
+import cn.sl.utils.LoginUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,18 +32,7 @@ public class IndexController {
     public String index(HttpServletRequest request, Model model,
                         @RequestParam(name = "page",defaultValue = "1") int page,
                         @RequestParam(name = "size",defaultValue = "5") int size) {
-
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie:cookies) {
-            if ("token".equals(cookie.getName())){
-                String token = cookie.getValue();
-                User user = userMapper.findByToken(token);
-                if (user != null) {
-                    request.getSession().setAttribute("user",user);
-                }
-                break;
-            }
-        }
+        LoginUtils.checkLogin(request,userMapper);
         PaginationDto paginationDto = questionService.list(page,size);
         model.addAttribute("paginationDto", paginationDto);
         return "index";
