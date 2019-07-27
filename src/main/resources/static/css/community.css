@@ -1,9 +1,8 @@
 body{
     background: #efefef;
 }
-
 .main{
-    margin: 30px;
+    margin: 30px 50px 50px 50px;
     background: white;
 }
 
@@ -23,7 +22,10 @@ body{
     font-weight: normal;
     color: #999;
 }
-
+.community-menu {
+    color: #999;
+    font-size: 13px;
+}
 
 
 

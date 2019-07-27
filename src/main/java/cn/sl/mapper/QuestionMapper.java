@@ -31,4 +31,17 @@ public interface QuestionMapper {
 
     @Select("select count(1) from question")
     int count();
+
+    @Select("select * from question where id=#{id}")
+    Question getById(int id);
+
+    @Select("select * from question where creator=#{id}")
+    Question getQuestionWithCreator(int id);
+
+
+    @Update("update question set title=#{title},description=#{description}," +
+            "gmt_create=#{gmtCreate},gmt_modified=#{gmtModified}," +
+            "creator=#{creator},comment_count=#{commentCount}," +
+            "view_count=#{viewCount},like_count=#{likeCount},tag=#{tag} where id=#{id}")
+    void updateQuestion(Question question);
 }

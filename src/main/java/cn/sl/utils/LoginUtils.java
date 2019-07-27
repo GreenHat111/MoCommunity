@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginUtils {
     public static User checkLogin(HttpServletRequest request, UserMapper userMapper) {
         Cookie[] cookies = request.getCookies();
+        if (cookies == null) return null;
         for (Cookie cookie:cookies) {
             if ("token".equals(cookie.getName())){
                 String token = cookie.getValue();

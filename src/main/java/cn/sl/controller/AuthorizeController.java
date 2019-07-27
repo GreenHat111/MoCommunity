@@ -46,14 +46,23 @@ public class AuthorizeController {
         String token = githubProvider.getAccessToken(accessTokenDto);
         GithubUser githubUser = githubProvider.getUser(token);
         if (githubUser != null) {
-            User user = new User();
+            // 首先判断此用户是否已经存在数据库当
             String loginToken = UUID.randomUUID().toString();
-            user.setName(githubUser.getName());
-            user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setToken(loginToken);
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
-            userMapper.insertUser(user);
+            User checkUser = userMapper.findByAccountId(String.valueOf(githubUser.getId()));
+            if(checkUser != null) {
+                // 说明token已经失效重新生成token
+                userMapper.updateToken(githubUser.getId(),loginToken,System.currentTimeMillis());
+            }else{
+                // 否则重新创建一个用户
+                User user = new User();
+                user.setName(githubUser.getName());
+                user.setAccountId(String.valueOf(githubUser.getId()));
+                user.setToken(loginToken);
+                user.setHeadImg(githubUser.getAvatar_url());
+                user.setGmtCreate(System.currentTimeMillis());
+                user.setGmtModified(user.getGmtCreate());
+                userMapper.insertUser(user);
+            }
             // 登录成功 写cookie和session
             request.getSession().setAttribute("user", githubUser);
             response.addCookie(new Cookie("token", loginToken));

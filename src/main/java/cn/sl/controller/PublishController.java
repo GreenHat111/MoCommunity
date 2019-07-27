@@ -2,15 +2,12 @@ package cn.sl.controller;
 
 import cn.sl.domain.Question;
 import cn.sl.domain.User;
-import cn.sl.mapper.QuestionMapper;
 import cn.sl.mapper.UserMapper;
-import cn.sl.utils.LoginUtils;
+import cn.sl.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,15 +20,30 @@ import javax.servlet.http.HttpServletRequest;
 public class PublishController {
 
     @Autowired
-    private QuestionMapper questionMapper;
+    private QuestionService questionService;
     @Autowired
     private UserMapper userMapper;
 
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable(name = "id") int id,
+                       Model model) {
+        Question question = questionService.getQuestionWithId(id);
+
+//        model.addAttribute("title",question.getTitle());
+//        model.addAttribute("description",question.getDescription());
+//        model.addAttribute("tag",question.getTag());
+//        model.addAttribute("id",question.getId());
+        model.addAttribute("question",question);
+        return "publish";
+    }
+
     @GetMapping("/publish")
-    public String publish(HttpServletRequest request) {
+    public String publish(HttpServletRequest request,
+                          Model model) {
         User user = getCurUser(request);
         if (user != null) {
             request.getSession().setAttribute("user", user);
+            model.addAttribute("question",new Question());
             return "publish";
         }else{
             return "index";
@@ -42,19 +54,33 @@ public class PublishController {
     public String doPublish(@RequestParam("title") String title,
                             @RequestParam("description") String description,
                             @RequestParam("tag") String tag,
-                            HttpServletRequest request){
+                            @RequestParam(value = "id",required = false) Integer id,
+                            HttpServletRequest request,
+                            Model model){
 
-        if ("".equals(title) || "".equals(description) || "".equals(tag)) return "publish";
-        User user = LoginUtils.checkLogin(request,userMapper);
-        if (user == null) return "index";
+        if ("".equals(title) || "".equals(description) || "".equals(tag)) {
+            model.addAttribute("question",new Question());
+            return "publish";
+        }
+
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) return "redirect:/";
         Question question = new Question();
         question.setTag(tag);
         question.setTitle(title);
         question.setDescription(description);
         question.setCreator(user.getId());
-        question.setGmtCreate(System.currentTimeMillis());
-        question.setGmtModified(question.getGmtCreate());
-        questionMapper.create(question);
+        if (id != null && questionService.getQuestionWithId(id) != null) {
+            question.setId(id);
+            question.setGmtModified(System.currentTimeMillis());
+            questionService.updateQuestion(question);
+            System.out.println(question.toString());
+        }else {
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            questionService.create(question);
+        }
+
 //        request.getSession().setAttribute("success","发布成功");
         return "redirect:/";
     }

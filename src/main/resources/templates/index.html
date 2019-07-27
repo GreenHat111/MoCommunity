@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>默</title>
-    <link rel="stylesheet" href=css/bootstrap.min.css>
-    <link rel="stylesheet" href=css/bootstrap-theme.min.css>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/community.css">
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -24,7 +24,7 @@
                 <div class="media-left">
                     <a href="#">
                         <div th:if="${question.user.headImg}!=null">
-                            <img class="media-object head_img img-circle" th:src="${question.user.headImg}" src="img/preview.jpg" alt="头像"/>
+                            <img class="media-object head_img img-circle" th:src="${question.user.headImg}" alt="头像"/>
                         </div>
                         <div th:if="${question.user.headImg}==null">
                             <img class="media-object head_img img-circle" src="img/preview.jpg" alt="头像"/>
@@ -32,7 +32,9 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h3 class="media-heading" th:text="${question.title}">Fist blood</h3>
+                    <h3 class="media-heading">
+                        <a th:href="@{'question/'+${question.id}}" th:text="${question.title}"></a>
+                    </h3>
                     <span th:text="${question.description}"></span><br />
                     <div class="text-desc">
                         <span th:text="${question.commentCount}"></span>个回复&nbsp;

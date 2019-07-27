@@ -23,4 +23,10 @@ public interface UserMapper {
     @Select("select * from user where id=#{creator}")
 //    @Results(id = "userMapper")
     User findById(int creator);
+
+    @Select("select id from user where account_id=#{accountId}")
+    User findByAccountId(String accountId);
+
+    @Update("update user set token=#{token},gmt_modified=#{gmtModified} where account_id=#{id}")
+    void updateToken(@Param("id") long id,@Param("token") String token,@Param("gmtModified") long gmtModified);
 }

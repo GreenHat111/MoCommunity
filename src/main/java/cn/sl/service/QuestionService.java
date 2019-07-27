@@ -20,6 +20,10 @@ public class QuestionService {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     *  不分页查询所有的集合
+     * @return
+     */
     public List<QuestionDto> list() {
         List<QuestionDto> questionDtos = new ArrayList<>();
         List<Question> questions = questionMapper.list();
@@ -69,7 +73,11 @@ public class QuestionService {
         for (Question question:questions) {
             User user = userMapper.findById(question.getCreator());
             QuestionDto questionDto = new QuestionDto();
-            questionDto.setUser(user);
+            if (user == null) {
+                questionDto.setUser(new User());
+            } else {
+                questionDto.setUser(user);
+            }
             BeanUtils.copyProperties(question,questionDto);
             questionDtos.add(questionDto);
         }
@@ -79,4 +87,28 @@ public class QuestionService {
         return paginationDto;
     }
 
+    public QuestionDto getById(int id) {
+        Question question = questionMapper.getById(id);
+        QuestionDto questionDto = new QuestionDto();
+        BeanUtils.copyProperties(question, questionDto);
+        User user = userMapper.findById(question.getCreator());
+        questionDto.setUser(user);
+        return questionDto;
+    }
+
+    public Question getQuestionWithId(int id) {
+        return questionMapper.getById(id);
+    }
+
+    public void create(Question question) {
+        questionMapper.create(question);
+    }
+
+    public Question getQuestionWithCreator(int id) {
+        return questionMapper.getQuestionWithCreator(id);
+    }
+
+    public void updateQuestion(Question question) {
+        questionMapper.updateQuestion(question);
+    }
 }
