@@ -2,6 +2,8 @@ package cn.sl.controller;
 
 import cn.sl.domain.Question;
 import cn.sl.domain.User;
+import cn.sl.exception.CustomErrorCode;
+import cn.sl.exception.CustomizeException;
 import cn.sl.mapper.UserMapper;
 import cn.sl.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,14 +75,15 @@ public class PublishController {
         if (id != null && questionService.getQuestionWithId(id) != null) {
             question.setId(id);
             question.setGmtModified(System.currentTimeMillis());
-            questionService.updateQuestion(question);
-            System.out.println(question.toString());
+            int update = questionService.updateQuestion(question);
+            if (update != 1) {
+                throw new CustomizeException(CustomErrorCode.QUESTION_NOT_FOUND);
+            }
         }else {
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
             questionService.create(question);
         }
-
 //        request.getSession().setAttribute("success","发布成功");
         return "redirect:/";
     }

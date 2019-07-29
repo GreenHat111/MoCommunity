@@ -33,10 +33,10 @@ public class IndexController {
                         @RequestParam(name = "page",defaultValue = "1") int page,
                         @RequestParam(name = "size",defaultValue = "5") int size) {
 //        LoginUtils.checkLogin(request,userMapper);
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
-            return "redirect:/";
-        }
+//        User user = (User) request.getSession().getAttribute("user");
+//        if (user == null) {
+//            return "redirect:/";
+//        }
         PaginationDto paginationDto = questionService.list(page,size);
         model.addAttribute("paginationDto", paginationDto);
         return "index";

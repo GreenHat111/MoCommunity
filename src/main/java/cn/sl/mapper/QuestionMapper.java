@@ -1,5 +1,6 @@
 package cn.sl.mapper;
 
+import cn.sl.domain.Comment;
 import cn.sl.domain.Question;
 import org.apache.ibatis.annotations.*;
 
@@ -43,5 +44,14 @@ public interface QuestionMapper {
             "gmt_create=#{gmtCreate},gmt_modified=#{gmtModified}," +
             "creator=#{creator},comment_count=#{commentCount}," +
             "view_count=#{viewCount},like_count=#{likeCount},tag=#{tag} where id=#{id}")
-    void updateQuestion(Question question);
+    int updateQuestion(Question question);
+
+    @Update("update question set view_count=view_count+1 where id=#{id}")
+    void addViewCount(int id);
+
+    @Select("select * from question where id=#{parentId}")
+    Question selectByPrimaryKey(Integer parentId);
+
+    @Update("update question set comment_count=comment_count+1 where id=#{id}")
+    void updateCommentCount(Integer id);
 }

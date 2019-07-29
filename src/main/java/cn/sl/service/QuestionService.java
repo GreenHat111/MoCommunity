@@ -1,9 +1,12 @@
 package cn.sl.service;
 
+import cn.sl.domain.Comment;
 import cn.sl.domain.Question;
 import cn.sl.domain.User;
 import cn.sl.dto.PaginationDto;
 import cn.sl.dto.QuestionDto;
+import cn.sl.exception.CustomErrorCode;
+import cn.sl.exception.CustomizeException;
 import cn.sl.mapper.QuestionMapper;
 import cn.sl.mapper.UserMapper;
 import org.springframework.beans.BeanUtils;
@@ -89,6 +92,9 @@ public class QuestionService {
 
     public QuestionDto getById(int id) {
         Question question = questionMapper.getById(id);
+        if (question == null) {
+            throw new CustomizeException(CustomErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDto questionDto = new QuestionDto();
         BeanUtils.copyProperties(question, questionDto);
         User user = userMapper.findById(question.getCreator());
@@ -108,7 +114,19 @@ public class QuestionService {
         return questionMapper.getQuestionWithCreator(id);
     }
 
-    public void updateQuestion(Question question) {
-        questionMapper.updateQuestion(question);
+    public int updateQuestion(Question question) {
+        return questionMapper.updateQuestion(question);
+    }
+
+    public void addViewCount(int id) {
+        questionMapper.addViewCount(id);
+    }
+
+    public Question selectByPrimaryKey(Integer parentId) {
+        return questionMapper.selectByPrimaryKey(parentId);
+    }
+
+    public void updateCommentCount(Integer id) {
+        questionMapper.updateCommentCount(id);
     }
 }

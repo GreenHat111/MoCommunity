@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Service
 public class SessionInterceptor implements HandlerInterceptor {
@@ -18,7 +20,9 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        return LoginUtils.checkLogin(request, userMapper) != null;
+        LoginUtils.checkLogin(request, userMapper);
+//        response.addCookie(new Cookie("token","bb5d577e-5f2f-4b4c-9dba-7b48a1b56484"));
+        return true;
     }
 
     @Override
