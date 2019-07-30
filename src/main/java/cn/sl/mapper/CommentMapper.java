@@ -1,10 +1,11 @@
 package cn.sl.mapper;
 
 import cn.sl.domain.Comment;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import cn.sl.domain.Question;
+import cn.sl.dto.CommentDto;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 @Mapper
 public interface CommentMapper {
@@ -15,4 +16,6 @@ public interface CommentMapper {
     @Select("select * from comment where id = #{parentId}")
     Comment selectByPrimaryKey(Integer parentId);
 
+    @Select("select * from comment where parent_id=#{id} and type=#{type}")
+    List<Comment> selectByQuestionId(@Param("id") Integer id, @Param("type") Integer type);
 }

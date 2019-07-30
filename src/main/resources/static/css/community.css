@@ -1,5 +1,6 @@
 body{
     background: #efefef;
+    font-family: NSimSun;
 }
 .main{
     margin: 30px 50px 50px 50px;
@@ -10,7 +11,13 @@ body{
     float: right;
     margin-bottom: 15px;
 }
-
+.comment_num {
+    margin-top: 15px;
+}
+.question-content {
+    margin: 25px 10px 25px 10px;
+    font-size: 25px;
+}
 
 .head_img{
     width: 50px;
@@ -31,3 +38,57 @@ body{
     margin: 50px;
 }
 
+
+.comment{
+    margin: 10px 10px 10px 10px;
+}
+.comment-btn{
+    float: right;
+    margin-bottom: 10px;
+}
+.comment-sp {
+    margin-top: 0;
+}
+
+.media-body .comment-content{
+    margin: 10px;
+    font-size: 22px;
+}
+
+.media-body .comment-head {
+    font-size: 13px;
+    color: #999999;
+    margin-left: 10px;
+}
+.media-bottom {
+    color: #999999;
+    font-size: 12px;
+    margin-left: 70px;
+}
+
+.media-bottom .icon {
+    margin-right: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.media-bottom .active {
+    margin-right: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    color: #499ef3;
+}
+.media-bottom .icon:hover {
+    color: #499ef3;
+}
+.comments {
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.second-comment {
+    border: 1px solid #eeeeee;
+    margin: 20px 10px 20px 55px;
+    font-size: 20px;
+    padding: 10px;
+}

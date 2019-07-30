@@ -1,7 +1,7 @@
 package cn.sl.domain;
 
 public class User {
-    private int id;
+    private Integer id;
     private String name;
     private String accountId;
     private String token;
@@ -10,11 +10,11 @@ public class User {
     private String bio;     // 描述
     private String headImg; // 用户头像
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

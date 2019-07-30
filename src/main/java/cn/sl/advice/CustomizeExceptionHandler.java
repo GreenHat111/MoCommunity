@@ -28,6 +28,7 @@ public class CustomizeExceptionHandler {
                 resultDto = ResultDto.errorOf((CustomizeException) e);
             }else {
                 resultDto = ResultDto.errorOf(CustomErrorCode.SYSTEM_ERROR);
+                System.out.println(e.getMessage());
             }
             try {
                 response.setContentType("application/json");
