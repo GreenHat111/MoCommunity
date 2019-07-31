@@ -3,33 +3,30 @@ package cn.sl.domain;
 
 public class Comment {
 
-  private Integer id;
-  private Integer parentId;
+  private Long id;
+  private Long parentId;
   private Integer type;
   private Integer commentUser;
   private Long gmtCreate;
   private Long gmtModified;
-  private Integer likeCount;
+  private Long likeCount;
   private String comment;
 
-
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
-
-  public Integer getParentId() {
+  public Long getParentId() {
     return parentId;
   }
 
-  public void setParentId(Integer parentId) {
+  public void setParentId(Long parentId) {
     this.parentId = parentId;
   }
-
 
   public Integer getType() {
     return type;
@@ -63,23 +60,23 @@ public class Comment {
     this.gmtModified = gmtModified;
   }
 
-  public Integer getLikeCount() {
+  public Long getLikeCount() {
     return likeCount;
   }
 
-  public void setLikeCount(Integer likeCount) {
+  public void setLikeCount(Long likeCount) {
     this.likeCount = likeCount;
   }
 
-    public String getComment() {
-        return comment;
-    }
+  public String getComment() {
+    return comment;
+  }
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
 
-    @Override
+  @Override
     public String toString() {
         return "Comment{" +
                 "id=" + id +

@@ -14,8 +14,8 @@ public interface CommentMapper {
     int create(Comment comment);
 
     @Select("select * from comment where id = #{parentId}")
-    Comment selectByPrimaryKey(Integer parentId);
+    Comment selectByPrimaryKey(Long parentId);
 
     @Select("select * from comment where parent_id=#{id} and type=#{type}")
-    List<Comment> selectByQuestionId(@Param("id") Integer id, @Param("type") Integer type);
+    List<Comment> selectByQuestionId(@Param("id") Long id, @Param("type") Integer type);
 }

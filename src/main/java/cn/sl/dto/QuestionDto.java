@@ -3,23 +3,23 @@ package cn.sl.dto;
 import cn.sl.domain.User;
 
 public class QuestionDto {
-    private int id;
+    private Long id;
     private String title;
     private String description;
-    private long gmtCreate;
-    private long gmtModified;
-    private int creator;
-    private int commentCount;
-    private int viewCount;
-    private int likeCount;
+    private Long gmtCreate;
+    private Long gmtModified;
+    private Integer creator;
+    private Integer commentCount;
+    private Integer viewCount;
+    private Integer likeCount;
     private String tag;
     private User user;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -39,51 +39,51 @@ public class QuestionDto {
         this.description = description;
     }
 
-    public long getGmtCreate() {
+    public Long getGmtCreate() {
         return gmtCreate;
     }
 
-    public void setGmtCreate(long gmtCreate) {
+    public void setGmtCreate(Long gmtCreate) {
         this.gmtCreate = gmtCreate;
     }
 
-    public long getGmtModified() {
+    public Long getGmtModified() {
         return gmtModified;
     }
 
-    public void setGmtModified(long gmtModified) {
+    public void setGmtModified(Long gmtModified) {
         this.gmtModified = gmtModified;
     }
 
-    public int getCreator() {
+    public Integer getCreator() {
         return creator;
     }
 
-    public void setCreator(int creator) {
+    public void setCreator(Integer creator) {
         this.creator = creator;
     }
 
-    public int getCommentCount() {
+    public Integer getCommentCount() {
         return commentCount;
     }
 
-    public void setCommentCount(int commentCount) {
+    public void setCommentCount(Integer commentCount) {
         this.commentCount = commentCount;
     }
 
-    public int getViewCount() {
+    public Integer getViewCount() {
         return viewCount;
     }
 
-    public void setViewCount(int viewCount) {
+    public void setViewCount(Integer viewCount) {
         this.viewCount = viewCount;
     }
 
-    public int getLikeCount() {
+    public Integer getLikeCount() {
         return likeCount;
     }
 
-    public void setLikeCount(int likeCount) {
+    public void setLikeCount(Integer likeCount) {
         this.likeCount = likeCount;
     }
 

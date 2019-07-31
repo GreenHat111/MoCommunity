@@ -5,6 +5,7 @@ import cn.sl.dto.AccessTokenDto;
 import cn.sl.dto.GithubUser;
 import cn.sl.mapper.UserMapper;
 import cn.sl.provider.GithubProvider;
+import cn.sl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,7 @@ public class AuthorizeController {
     @Autowired
     private GithubProvider githubProvider;
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     @Value("${github.client_id}")
     private String client_id;
@@ -48,10 +49,10 @@ public class AuthorizeController {
         if (githubUser != null) {
             // 首先判断此用户是否已经存在数据库当
             String loginToken = UUID.randomUUID().toString();
-            User checkUser = userMapper.findByAccountId(String.valueOf(githubUser.getId()));
+            User checkUser = userService.findByAccountId(String.valueOf(githubUser.getId()));
             if(checkUser != null) {
                 // 说明token已经失效重新生成token
-                userMapper.updateToken(githubUser.getId(),loginToken,System.currentTimeMillis());
+                userService.updateToken(githubUser.getId(),loginToken,System.currentTimeMillis());
             }else{
                 // 否则重新创建一个用户
                 User user = new User();
@@ -61,7 +62,7 @@ public class AuthorizeController {
                 user.setHeadImg(githubUser.getAvatar_url());
                 user.setGmtCreate(System.currentTimeMillis());
                 user.setGmtModified(user.getGmtCreate());
-                userMapper.insertUser(user);
+                userService.insertUser(user);
             }
             // 登录成功 写cookie和session
             request.getSession().setAttribute("user", githubUser);

@@ -16,4 +16,11 @@ public class TokenTest {
         System.out.println(scope);
         System.out.println(token_type);
     }
+    @Test
+    public void test2() {
+        String tag = "first,time,second,time，fuck";
+        String tags = tag.replace(',','|').replace('，','|');
+        System.out.println(tags);
+        System.out.println();
+    }
 }

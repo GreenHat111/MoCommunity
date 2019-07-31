@@ -7,9 +7,9 @@ import java.util.List;
  *  分页封装
  */
 
-public class PaginationDto {
+public class PaginationDto<T> {
 
-    private List<QuestionDto> questionDtos;
+    private List<T> dataList;
     private boolean showPrevious;
     private boolean showFirstPage;
     private boolean showNext;
@@ -18,13 +18,12 @@ public class PaginationDto {
     private int totalPage;
     private List<Integer> pages = new ArrayList<>();
 
-
-    public List<QuestionDto> getQuestionDtos() {
-        return questionDtos;
+    public List<T> getDataList() {
+        return dataList;
     }
 
-    public void setQuestionDtos(List<QuestionDto> questionDtos) {
-        this.questionDtos = questionDtos;
+    public void setDataList(List<T> dataList) {
+        this.dataList = dataList;
     }
 
     public boolean isShowPrevious() {
@@ -108,7 +107,19 @@ public class PaginationDto {
         showFirstPage = !pages.contains(1);
         // 是否展示最后一页
         showEndPage = !pages.contains(totalPage);
+    }
 
-
+    @Override
+    public String toString() {
+        return "PaginationDto{" +
+                "dataList=" + dataList +
+                ", showPrevious=" + showPrevious +
+                ", showFirstPage=" + showFirstPage +
+                ", showNext=" + showNext +
+                ", showEndPage=" + showEndPage +
+                ", page=" + page +
+                ", totalPage=" + totalPage +
+                ", pages=" + pages +
+                '}';
     }
 }

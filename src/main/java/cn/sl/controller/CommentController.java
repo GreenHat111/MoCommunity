@@ -7,8 +7,7 @@ import cn.sl.dto.CommentDto;
 import cn.sl.dto.ResultDto;
 import cn.sl.enums.CommentTypeEnum;
 import cn.sl.exception.CustomErrorCode;
-import cn.sl.exception.CustomizeException;
-import cn.sl.mapper.CommentMapper;
+
 import cn.sl.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,13 +40,13 @@ public class CommentController {
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setGmtModified(comment.getGmtCreate());
         comment.setCommentUser(user.getId());
-        commentService.create(comment);
+        commentService.create(comment,user);
         return ResultDto.okOf();
     }
 
     @ResponseBody
     @GetMapping("/comment/{id}")
-    public ResultDto comments(@PathVariable(name = "id") Integer id) {
+    public ResultDto comments(@PathVariable(name = "id") Long id) {
         List<CommentDto> commentDtoList = commentService.listByTargetId(id, CommentTypeEnum.COMMENT.getType());
         return ResultDto.okOf(commentDtoList);
     }

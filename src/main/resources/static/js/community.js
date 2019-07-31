@@ -34,7 +34,10 @@ function collapseComments(e) {
             e.classList.add("active");
         }else {
             $.getJSON("/comment/" + id, function (data) {
-                $.each(data.data, function (key, comment) {
+                console.log(data.data);
+                console.log(data.data.reverse());
+                $.each(data.data.reverse(), function (key, comment) {
+                    console.log(key + "--------->" +comment);
                     var mediaLeftElement = $("<div/>", {
                         "class": "media-left"
                     }).append($("<img/>", {

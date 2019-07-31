@@ -1,15 +1,15 @@
 package cn.sl.dto;
 
 public class CommentCreateDto {
-    private Integer parentId;
+    private Long parentId;
     private String comment;
     private Integer type;
 
-    public Integer getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(Integer parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 

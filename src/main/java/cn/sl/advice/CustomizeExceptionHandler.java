@@ -26,6 +26,7 @@ public class CustomizeExceptionHandler {
             ResultDto resultDto = null;
             if (e instanceof CustomizeException){
                 resultDto = ResultDto.errorOf((CustomizeException) e);
+                System.out.println(e.getMessage());
             }else {
                 resultDto = ResultDto.errorOf(CustomErrorCode.SYSTEM_ERROR);
                 System.out.println(e.getMessage());
@@ -47,6 +48,7 @@ public class CustomizeExceptionHandler {
         }else {
             model.addAttribute("message", "服务器冒烟了 别再试了");
         }
+        System.out.println(e.getMessage());
         return new ModelAndView("error");
     }
 

@@ -33,7 +33,9 @@
                 <div class="form-group">
                     <label for="tag">添加标签</label>
                     <input type="text" name="tag" class="form-control"
-                           id="tag" placeholder="请输入标签(以逗号(,)分隔)" th:value="${question.tag}">
+                           id="tag" placeholder="请输入标签(以逗号(,)分隔)"
+                           autocomplete="off" th:value="${question.tag}">
+
                 </div>
                 <input class="btn btn-success publish_btn" type="submit" value="确定提交">
 

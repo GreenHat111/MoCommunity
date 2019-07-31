@@ -6,6 +6,7 @@ import cn.sl.exception.CustomErrorCode;
 import cn.sl.exception.CustomizeException;
 import cn.sl.mapper.UserMapper;
 import cn.sl.service.QuestionService;
+import cn.sl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,10 +25,10 @@ public class PublishController {
     @Autowired
     private QuestionService questionService;
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable(name = "id") int id,
+    public String edit(@PathVariable(name = "id") Long id,
                        Model model) {
         Question question = questionService.getQuestionWithId(id);
 
@@ -56,7 +57,7 @@ public class PublishController {
     public String doPublish(@RequestParam("title") String title,
                             @RequestParam("description") String description,
                             @RequestParam("tag") String tag,
-                            @RequestParam(value = "id",required = false) Integer id,
+                            @RequestParam(value = "id",required = false) Long id,
                             HttpServletRequest request,
                             Model model){
 
@@ -94,7 +95,7 @@ public class PublishController {
         for (Cookie cookie:cookies) {
             if ("token".equals(cookie.getName())){
                 String token = cookie.getValue();
-                User user = userMapper.findByToken(token);
+                User user = userService.findByToken(token);
                 if (user != null) {
                     return user;
                 }

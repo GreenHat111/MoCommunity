@@ -21,7 +21,7 @@ public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     /**
      *  不分页查询所有的集合
@@ -31,7 +31,7 @@ public class QuestionService {
         List<QuestionDto> questionDtos = new ArrayList<>();
         List<Question> questions = questionMapper.list();
         for (Question q:questions) {
-            User user = userMapper.findById(q.getCreator());
+            User user = userService.findById(q.getCreator());
             if (user != null){
                 QuestionDto questionDto = new QuestionDto();
                 BeanUtils.copyProperties(q, questionDto);
@@ -44,6 +44,7 @@ public class QuestionService {
 
     public PaginationDto list(int page, int size) {
         int totalPage = getTotalPage(questionMapper.count(),size);
+        if (totalPage<=0) totalPage=1;
         if(page < 1){
             page = 1;
         }else if (page > totalPage){
@@ -71,10 +72,10 @@ public class QuestionService {
     }
 
     private PaginationDto getPaginationDto(List<Question> questions,int page,int size) {
-        PaginationDto paginationDto = new PaginationDto();
+        PaginationDto<QuestionDto> paginationDto = new PaginationDto<>();
         List<QuestionDto> questionDtos = new ArrayList<>();
         for (Question question:questions) {
-            User user = userMapper.findById(question.getCreator());
+            User user = userService.findById(question.getCreator());
             QuestionDto questionDto = new QuestionDto();
             if (user == null) {
                 questionDto.setUser(new User());
@@ -84,25 +85,25 @@ public class QuestionService {
             BeanUtils.copyProperties(question,questionDto);
             questionDtos.add(questionDto);
         }
-        paginationDto.setQuestionDtos(questionDtos);
+        paginationDto.setDataList(questionDtos);
         Integer totalCount = questionMapper.count();
         paginationDto.setPagination(totalCount,page,size);
         return paginationDto;
     }
 
-    public QuestionDto getById(int id) {
+    public QuestionDto getById(Long id) {
         Question question = questionMapper.getById(id);
         if (question == null) {
             throw new CustomizeException(CustomErrorCode.QUESTION_NOT_FOUND);
         }
         QuestionDto questionDto = new QuestionDto();
         BeanUtils.copyProperties(question, questionDto);
-        User user = userMapper.findById(question.getCreator());
+        User user = userService.findById(question.getCreator());
         questionDto.setUser(user);
         return questionDto;
     }
 
-    public Question getQuestionWithId(int id) {
+    public Question getQuestionWithId(Long id) {
         return questionMapper.getById(id);
     }
 
@@ -118,15 +119,42 @@ public class QuestionService {
         return questionMapper.updateQuestion(question);
     }
 
-    public void addViewCount(int id) {
+    public void addViewCount(Long id) {
         questionMapper.addViewCount(id);
     }
 
-    public Question selectByPrimaryKey(Integer parentId) {
+    public Question selectByPrimaryKey(Long parentId) {
         return questionMapper.selectByPrimaryKey(parentId);
     }
 
-    public void updateCommentCount(Integer id) {
+    public void updateCommentCount(Long id) {
         questionMapper.updateCommentCount(id);
     }
+
+//    public List<QuestionDto> selectRelated(QuestionDto questionDto) {
+//        String tags = questionDto.getTag().replace(',','|').replace('，','|');
+//        if ("".equals(tags) || tags == null) return new ArrayList<>();
+//        List<Question> questions = questionMapper.selectRelated(questionDto.getId(),tags);
+//        return getQuestionDto(questions);
+//    }
+
+    public List<Question> selectRelated(QuestionDto questionDto) {
+        String tags = questionDto.getTag().replace(',','|').replace('，','|');
+        if ("".equals(tags) || tags == null) return new ArrayList<>();
+        List<Question> questions = questionMapper.selectRelated(questionDto.getId(),tags);
+        return questions;
+    }
+
+    private List<QuestionDto> getQuestionDto(List<Question> questions) {
+        List<QuestionDto> questionDtos = new ArrayList<>();
+        for (Question question:questions) {
+            QuestionDto questionDto = new QuestionDto();
+            User user = userService.findById(question.getCreator());
+            questionDto.setUser(user);
+            BeanUtils.copyProperties(question,questionDto);
+            questionDtos.add(questionDto);
+        }
+        return questionDtos;
+    }
+
 }

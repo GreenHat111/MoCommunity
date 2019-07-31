@@ -24,7 +24,7 @@ public interface QuestionMapper {
 //    })
     List<Question> list();
 
-    @Select("select * from question limit #{page},#{size}")
+    @Select("select * from question order by gmt_create desc limit #{page},#{size}")
     List<Question> paginationList(@Param("page") Integer page,@Param("size") Integer size);
 
     @Select("select * from question where creator=#{id} limit #{page},#{size}")
@@ -34,10 +34,10 @@ public interface QuestionMapper {
     int count();
 
     @Select("select * from question where id=#{id}")
-    Question getById(int id);
+    Question getById(Long id);
 
     @Select("select * from question where creator=#{id}")
-    Question getQuestionWithCreator(int id);
+    Question getQuestionWithCreator(Integer id);
 
 
     @Update("update question set title=#{title},description=#{description}," +
@@ -47,11 +47,14 @@ public interface QuestionMapper {
     int updateQuestion(Question question);
 
     @Update("update question set view_count=view_count+1 where id=#{id}")
-    void addViewCount(int id);
+    void addViewCount(Long id);
 
     @Select("select * from question where id=#{parentId}")
-    Question selectByPrimaryKey(Integer parentId);
+    Question selectByPrimaryKey(Long parentId);
 
     @Update("update question set comment_count=comment_count+1 where id=#{id}")
-    void updateCommentCount(Integer id);
+    void updateCommentCount(Long id);
+
+    @Select("select * from question where id!=#{id} and tag regexp #{tags}")
+    List<Question> selectRelated(@Param("id") Long id, @Param("tags") String tags);
 }
