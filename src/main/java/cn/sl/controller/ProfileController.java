@@ -7,6 +7,7 @@ import cn.sl.dto.PaginationDto;
 import cn.sl.mapper.UserMapper;
 import cn.sl.service.NotificationService;
 import cn.sl.service.QuestionService;
+import cn.sl.service.UserService;
 import cn.sl.utils.LoginUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,7 @@ import java.util.List;
 public class ProfileController {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
     @Autowired
     private QuestionService questionService;
     @Autowired
@@ -38,24 +39,23 @@ public class ProfileController {
                           @RequestParam(name = "size", defaultValue = "5") int size,
                           Model model,
                           HttpServletRequest request) {
-        User user = LoginUtils.checkLogin(request, userMapper);
+        User user = LoginUtils.checkLogin(request, userService);
         if (user == null) {
             return "redirect:/";
         }
+        Integer unReadCount = notificationService.unreadCount(user.getId());
+        model.addAttribute("unreadCount", unReadCount);
         if ("questions".equals(action)){
-            model.addAttribute("section","questions");
-            model.addAttribute("sectionName","我的提问");
             PaginationDto paginationDto = questionService.list(user.getId(),page,size);
             model.addAttribute("pagination", paginationDto);
+            model.addAttribute("section","questions");
+            model.addAttribute("sectionName","我的提问");
         }else if ("replies".equals(action)) {
             PaginationDto paginationDto = notificationService.list(user.getId(),page,size);
             model.addAttribute("pagination", paginationDto);
             model.addAttribute("section","replies");
             model.addAttribute("sectionName","最新回复");
         }
-        Integer unReadCount = notificationService.unreadCount(user.getId());
-        System.out.println(unReadCount);
-        model.addAttribute("unreadCount", unReadCount);
         return "profile";
     }
 

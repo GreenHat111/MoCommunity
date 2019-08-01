@@ -3,7 +3,6 @@ package cn.sl.controller;
 import cn.sl.domain.User;
 import cn.sl.dto.AccessTokenDto;
 import cn.sl.dto.GithubUser;
-import cn.sl.mapper.UserMapper;
 import cn.sl.provider.GithubProvider;
 import cn.sl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.util.UUID;
 
 @Controller
@@ -38,6 +36,9 @@ public class AuthorizeController {
                            @RequestParam(name = "state") String state,
                            HttpServletRequest request,
                            HttpServletResponse response ) {
+        if (code == null || "".equals(code) || "".equals(state) || state==null) {
+            return "redirect:/";
+        }
         AccessTokenDto accessTokenDto = new AccessTokenDto();
         accessTokenDto.setCode(code);
         accessTokenDto.setClient_id(client_id);
@@ -52,11 +53,14 @@ public class AuthorizeController {
             User checkUser = userService.findByAccountId(String.valueOf(githubUser.getId()));
             if(checkUser != null) {
                 // 说明token已经失效重新生成token
-                userService.updateToken(githubUser.getId(),loginToken,System.currentTimeMillis());
+                userService.updateToken(checkUser.getId(),loginToken,System.currentTimeMillis());
             }else{
                 // 否则重新创建一个用户
                 User user = new User();
                 user.setName(githubUser.getName());
+                if (githubUser.getName() == null || "".equals(githubUser.getName())) {
+                    return "redirect:/";
+                }
                 user.setAccountId(String.valueOf(githubUser.getId()));
                 user.setToken(loginToken);
                 user.setHeadImg(githubUser.getAvatar_url());

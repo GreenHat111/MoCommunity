@@ -1,6 +1,5 @@
 package cn.sl.service;
 
-import cn.sl.domain.Comment;
 import cn.sl.domain.Question;
 import cn.sl.domain.User;
 import cn.sl.dto.PaginationDto;
@@ -8,7 +7,6 @@ import cn.sl.dto.QuestionDto;
 import cn.sl.exception.CustomErrorCode;
 import cn.sl.exception.CustomizeException;
 import cn.sl.mapper.QuestionMapper;
-import cn.sl.mapper.UserMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,8 +40,12 @@ public class QuestionService {
         return questionDtos;
     }
 
-    public PaginationDto list(int page, int size) {
-        int totalPage = getTotalPage(questionMapper.count(),size);
+
+    public PaginationDto list(String search,int page, int size) {
+        search = search.replace(" ","|")
+                .replace(",","|")
+                .replace("，","|");
+        int totalPage = getTotalPage(questionMapper.countSearchAll(search),size);
         if (totalPage<=0) totalPage=1;
         if(page < 1){
             page = 1;
@@ -51,27 +53,44 @@ public class QuestionService {
             page = totalPage;
         }
         int offset = size * (page - 1);
-        List<Question> questions = questionMapper.paginationList(offset, size);
-        return getPaginationDto(questions,page,size);
+        List<Question> questions = questionMapper.paginationSearchList(search,offset, size);
+        return getPaginationDto(questions,page,size,null,search);
     }
 
-    public PaginationDto list(int id,int page,int size) {
-        int totalPage = getTotalPage(questionMapper.count(),size);
+    public PaginationDto list(int page, int size) {
+        int totalPage = getTotalPage(questionMapper.countAll(),size);
+        if (totalPage<=0) totalPage=1;
         if(page < 1){
             page = 1;
         }else if (page > totalPage){
             page = totalPage;
         }
         int offset = size * (page - 1);
-        List<Question> questions = questionMapper.paginationWithIdList(id,offset, size);
-        return getPaginationDto(questions,page,size);
+
+
+        List<Question> questions = questionMapper.paginationList(offset, size);
+        return getPaginationDto(questions,page,size,null,null);
+    }
+
+    public PaginationDto list(int userId,int page,int size) {
+        int totalPage = getTotalPage(questionMapper.count(userId),size);
+        if (totalPage <= 0) totalPage=1;
+        if(page < 1){
+            page = 1;
+        }else if (page > totalPage){
+            page = totalPage;
+        }
+        int offset = size * (page - 1);
+        List<Question> questions = questionMapper.paginationWithIdList(userId,offset, size);
+        return getPaginationDto(questions,page,size,userId,null);
     }
 
     private int getTotalPage(int count, int size) {
         return count%size==0?count/size:count/size+1;
     }
 
-    private PaginationDto getPaginationDto(List<Question> questions,int page,int size) {
+    private PaginationDto getPaginationDto(List<Question> questions,int page,int size,
+                                           Integer userId,String search) {
         PaginationDto<QuestionDto> paginationDto = new PaginationDto<>();
         List<QuestionDto> questionDtos = new ArrayList<>();
         for (Question question:questions) {
@@ -86,10 +105,19 @@ public class QuestionService {
             questionDtos.add(questionDto);
         }
         paginationDto.setDataList(questionDtos);
-        Integer totalCount = questionMapper.count();
+        Integer totalCount = null;
+        if (userId == null && search == null || "".equals(search)) {
+            totalCount = questionMapper.countAll();
+        }else if (userId != null){
+            totalCount = questionMapper.count(userId);
+        }else if (search!= null && !"".equals(search) && userId == null) {
+            totalCount = questionMapper.countSearchAll(search);
+        }
         paginationDto.setPagination(totalCount,page,size);
         return paginationDto;
     }
+
+
 
     public QuestionDto getById(Long id) {
         Question question = questionMapper.getById(id);
@@ -131,12 +159,6 @@ public class QuestionService {
         questionMapper.updateCommentCount(id);
     }
 
-//    public List<QuestionDto> selectRelated(QuestionDto questionDto) {
-//        String tags = questionDto.getTag().replace(',','|').replace('，','|');
-//        if ("".equals(tags) || tags == null) return new ArrayList<>();
-//        List<Question> questions = questionMapper.selectRelated(questionDto.getId(),tags);
-//        return getQuestionDto(questions);
-//    }
 
     public List<Question> selectRelated(QuestionDto questionDto) {
         String tags = questionDto.getTag().replace(',','|').replace('，','|');

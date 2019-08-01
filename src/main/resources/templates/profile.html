@@ -22,6 +22,9 @@
             <h2><span th:text="${sectionName}"></span></h2>
             <hr />
             <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" th:if="${section=='questions'}">
+                <div class="media" th:if="${pagination.dataList == null}">
+                    赶快去发布问题吧
+                </div>
                 <div class="media"  th:each="question:${pagination.dataList}">
                     <div class="media-left">
                         <a href="#">
@@ -41,7 +44,7 @@
                         <div class="text-desc">
                             <span th:text="${question.commentCount}"></span>个回复&nbsp;
                             <span th:text="${question.viewCount}"></span>浏览数&nbsp;
-                            <span th:text="${#dates.format(question.gmtCreate,'yyyy/MM/dd')}"></span>发布&nbsp;
+                            <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd hh:MM:ss')}"></span>发布&nbsp;
                         </div>
                     </div>
                     <hr />
@@ -49,18 +52,26 @@
             </div>
 
             <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" th:if="${section=='replies'}">
+                <div class="media" th:if="${pagination.dataList == null}">
+                    还没人回答过你的问题
+                </div>
                 <div class="media"  th:each="notification:${pagination.dataList}">
                     <div class="media-body">
-                        <p class="media-heading" >
+                        <h3 class="media-heading" >
                             <span th:text="${notification.notifierName + ' ' + notification.typeName+' '}"></span>
                             <a th:text="${notification.outerTitle}"
                                th:href="@{'/notification/'+${notification.id}}"></a>
-                        </p>
+                            <span class="label label-danger" th:if="${notification.status == 0}">未读</span>
+                        </h3>
+                        <div class="text-desc">
+                            <span th:text="${#dates.format(notification.gmtCreate,'yyyy-MM-dd hh:MM:ss')}"></span>发布&nbsp;
+                        </div>
                     </div>
                     <hr />
                 </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" th:if="${pagicnation != null}">
                 <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li th:if="${pagination.showFirstPage}">

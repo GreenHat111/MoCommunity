@@ -18,8 +18,9 @@ public class UserService {
         return userMapper.findByAccountId(valueOf);
     }
 
-    public void updateToken(long id, String loginToken, long currentTimeMillis) {
-        userMapper.updateToken(id,loginToken,currentTimeMillis);
+    public Integer updateToken(long id, String loginToken, long currentTimeMillis) {
+//        System.out.println(id+ "  " +loginToken + "  "+currentTimeMillis);
+        return userMapper.updateToken(id,loginToken,currentTimeMillis);
     }
 
     public void insertUser(User user) {
@@ -28,5 +29,13 @@ public class UserService {
 
     public User findByToken(String token) {
         return userMapper.findByToken(token);
+    }
+
+    public User findByMail(String mail) {
+        return userMapper.findByMail(mail);
+    }
+
+    public User checkUser(String mail, String md5) {
+        return userMapper.checkUser(mail,md5);
     }
 }

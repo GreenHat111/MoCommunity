@@ -6,8 +6,13 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/community.css">
+    <link rel="stylesheet" href="/css/editormd.preview.min.css">
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="/js/moment.js"></script>
+    <script src="/js/editormd.min.js"></script>
+    <script src="/js/lib/marked.min.js"></script>
+    <script src="/js/lib/prettify.min.js"></script>
 <body>
 <script type="application/javascript">
     window.onload = function (ev) {
@@ -24,58 +29,68 @@
 
 <div class="container-fluid main">
     <div class="row">
+
         <div class="col-lg-9 col-md-12 col-xs-12 col-sm-12">
             <h2><span class="glyphicon glyphicon-list" aria-hidden="true">发现</span></h2>
-            <hr />
-            <div class="media"  th:each="question:${paginationDto.dataList}">
+            <hr/>
+            <div th:if="${paginationDto.dataList == null || paginationDto.dataList.size() == 0}">
+                <h1>你搜索的问题不存在哦</h1>
+            </div>
+            <div th:if="${paginationDto.dataList != null}">
+                <div class="media" th:each="question,index:${paginationDto.dataList}">
                 <div class="media-left">
                     <a href="#">
-                        <div th:if="${question.user.headImg}!=null">
-                            <img class="media-object head_img img-circle" th:src="${question.user.headImg}" alt="头像"/>
-                        </div>
-                        <div th:if="${question.user.headImg}==null">
-                            <img class="media-object head_img img-circle" src="img/preview.jpg" alt="头像"/>
-                        </div>
+                        <img class="media-object head_img img-circle"
+                             th:src="${question.user.headImg == null ? '/img/preview.jpg' : question.user.headImg}"
+                             alt="头像"/>
                     </a>
                 </div>
                 <div class="media-body">
                     <h3 class="media-heading">
                         <a th:href="@{'question/'+${question.id}}" th:text="${question.title}"></a>
                     </h3>
-                    <span th:text="${question.description}"></span><br />
-                    <div class="text-desc">
-                        <span th:text="${question.commentCount}"></span>个回复&nbsp;
-                        <span th:text="${question.viewCount}"></span>浏览数&nbsp;
-                        <span th:text="${#dates.format(question.gmtCreate,'yyyy/MM/dd')}"></span>发布&nbsp;
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 question-content" style="height: 200px;"
+                         th:id="${'question-markdown-view-' + index.index}">
+                        <textarea style="display: none;" th:text="${question.description}"></textarea>
                     </div>
+                    <br/>
+
+                    <!--<span th:text="${question.description}"></span>-->
                 </div>
-                <hr />
+                <div class="media-bottom text-desc">
+                    <span th:text="${question.commentCount == null ? '0': question.commentCount}"></span>个回复&nbsp;
+                    <span th:text="${question.viewCount == null ? '0' : question.viewCount}"></span>浏览数&nbsp;
+                    <span th:text="${#dates.format(question.gmtCreate,'yyyy/MM/dd')}"></span>发布&nbsp;
+                </div>
+                <hr/>
+            </div>
             </div>
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li th:if="${paginationDto.showFirstPage}">
-                        <a th:href="@{/(page=1)}" aria-label="Previous">
+                        <a th:href="@{'/?'+ ${search != null ? 'search='+search+'&':''} +'page=1'}" aria-label="Previous">
                             <span aria-hidden="true">&lt;&lt;</span>
                         </a>
                     </li>
                     <li th:if="${paginationDto.showPrevious}">
-                        <a th:href="@{/(page=${paginationDto.page - 1})}" aria-label="Previous">
+                        <a aria-label="Previous"
+                         th:href="@{'/?'+ ${search != null ? 'search='+search+'&':''} + 'page='+${paginationDto.page - 1}}">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
 
                     <li th:each="page:${paginationDto.pages}" th:class="${paginationDto.page==page}?'active':''">
-                        <a th:href="@{/(page=${page})}" th:text="${page}">
+                        <a th:href="@{'/?'+ ${search != null ? 'search='+search+'&':''} + 'page='+${page}}" th:text="${page}">
                         </a>
                     </li>
 
                     <li th:if="${paginationDto.showNext}">
-                        <a th:href="@{/(page=${paginationDto.page + 1})}" aria-label="Next">
+                        <a th:href="@{'/?'+ ${search != null ? 'search='+search+'&':''} + 'page='+${paginationDto.page + 1}}" aria-label="Next">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>
                     <li th:if="${paginationDto.showEndPage}">
-                        <a th:href="@{/(page=${paginationDto.totalPage})}" aria-label="Next">
+                        <a th:href="@{'/?'+ ${search != null ? 'search='+search+'&':''} + 'page='+${paginationDto.totalPage}}" aria-label="Next">
                             <span aria-hidden="true">&gt;&gt;</span>
                         </a>
                     </li>
@@ -85,8 +100,18 @@
         <div class="col-lg-3 col-md-12 col-xs-12 col-sm-12" style="border-left: #0f0f0f">
             <h3>热门话题</h3>
         </div>
-
     </div>
+
+<script>
+    for (var i=0;i<5;i++) {
+        editormd.markdownToHTML("question-markdown-view-" + i, {
+
+        });
+    }
+
+
+
+</script>
 </div>
 
 </body>

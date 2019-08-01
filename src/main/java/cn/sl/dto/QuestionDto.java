@@ -15,6 +15,13 @@ public class QuestionDto {
     private String tag;
     private User user;
 
+    public  QuestionDto() {
+        commentCount = 0;
+        viewCount = 0;
+        likeCount = 0;
+    }
+
+
     public Long getId() {
         return id;
     }

@@ -9,6 +9,8 @@ public class User {
     private long gmtModified;
     private String bio;     // 描述
     private String headImg; // 用户头像
+    private String mail;
+    private String passwordMd5;
 
     public Integer getId() {
         return id;
@@ -74,6 +76,22 @@ public class User {
         this.headImg = headImg;
     }
 
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getPasswordMd5() {
+        return passwordMd5;
+    }
+
+    public void setPasswordMd5(String passwordMd5) {
+        this.passwordMd5 = passwordMd5;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -85,6 +103,8 @@ public class User {
                 ", gmtModified=" + gmtModified +
                 ", bio='" + bio + '\'' +
                 ", headImg='" + headImg + '\'' +
+                ", mail='" + mail + '\'' +
+                ", passwordMd5='" + passwordMd5 + '\'' +
                 '}';
     }
 }

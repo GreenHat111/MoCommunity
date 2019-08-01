@@ -12,6 +12,11 @@ public class Question {
     private Integer likeCount;
     private String tag;
 
+    public Question() {
+        commentCount = 0;
+        viewCount = 0;
+        likeCount = 0;
+    }
 
     public Long getId() {
         return id;

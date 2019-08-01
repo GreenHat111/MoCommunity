@@ -1,6 +1,5 @@
 package cn.sl.dto;
 
-import cn.sl.domain.User;
 
 public class NotificationDto {
     private Long id;
@@ -83,5 +82,20 @@ public class NotificationDto {
 
     public void setNotifierName(String notifierName) {
         this.notifierName = notifierName;
+    }
+
+    @Override
+    public String toString() {
+        return "NotificationDto{" +
+                "id=" + id +
+                ", gmtCreate=" + gmtCreate +
+                ", status=" + status +
+                ", outerTitle='" + outerTitle + '\'' +
+                ", typeName='" + typeName + '\'' +
+                ", type=" + type +
+                ", notifyUser=" + notifyUser +
+                ", notifierName='" + notifierName + '\'' +
+                ", outerId=" + outerId +
+                '}';
     }
 }

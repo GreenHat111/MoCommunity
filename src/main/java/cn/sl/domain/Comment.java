@@ -12,6 +12,10 @@ public class Comment {
   private Long likeCount;
   private String comment;
 
+  public Comment() {
+    likeCount = 0L;
+  }
+
   public Long getId() {
     return id;
   }

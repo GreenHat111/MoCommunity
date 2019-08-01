@@ -27,11 +27,17 @@ public interface QuestionMapper {
     @Select("select * from question order by gmt_create desc limit #{page},#{size}")
     List<Question> paginationList(@Param("page") Integer page,@Param("size") Integer size);
 
-    @Select("select * from question where creator=#{id} limit #{page},#{size}")
+    @Select("select * from question where tag regexp #{search} or title regexp #{search} order by gmt_create desc limit #{page},#{size}")
+    List<Question> paginationSearchList(@Param("search") String search,@Param("page") Integer page,@Param("size") Integer size);
+
+    @Select("select * from question where creator=#{id} order by gmt_create desc limit #{page},#{size}")
     List<Question> paginationWithIdList(@Param("id") int id,@Param("page") int page,@Param("size") int size);
 
+    @Select("select count(1) from question where creator=#{userId}")
+    int count(Integer userId);
+
     @Select("select count(1) from question")
-    int count();
+    int countAll();
 
     @Select("select * from question where id=#{id}")
     Question getById(Long id);
@@ -57,4 +63,7 @@ public interface QuestionMapper {
 
     @Select("select * from question where id!=#{id} and tag regexp #{tags}")
     List<Question> selectRelated(@Param("id") Long id, @Param("tags") String tags);
+
+    @Select("select count(1) from question where tag regexp #{search} or title regexp #{search}")
+    int countSearchAll(String search);
 }

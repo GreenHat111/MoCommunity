@@ -13,10 +13,10 @@ public interface NotificationMapper {
             " VALUES(#{notifyUser},#{receiveUser},#{outerId},#{type},#{gmtCreate},#{status},#{notifierName},#{outerTitle})")
     int insert(Notification notification);
 
-    @Select("select count(1) from notification where notify_user=#{id} and status=0")
+    @Select("select count(1) from notification where notify_user=#{id}")
     int count(Integer userId);
 
-    @Select("select * from notification where notify_user=#{id} limit #{page},#{size}")
+    @Select("select * from notification where receive_user=#{id} order by gmt_create desc limit #{page},#{size}")
     List<Notification> paginationWithIdList(@Param("id") Integer id, @Param("page") int page, @Param("size") int size);
 
     @Select("select count(1) from notification where receive_user=#{id} and status=0")

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>默:登录</title>
+
+    <!-- Application styles-->
+    <link rel="stylesheet" href="/css/bundle-home.css">
+    <script src="/js/bundle-home.js"></script>
+    <!-- Global site tag (gtag.js) - Google Ads: 939457589 -->
+    <script>window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'AW-939457589');
+    </script>
+    <script type="text/javascript">adroll_adv_id = "2MRQCDJFJ5ECPBITSV4TL2";
+    adroll_pix_id = "C6C2B5WSCZF6DEPMMYXB24";
+
+    (function () {
+        var _onload = function () {
+            if (document.readyState && !/loaded|complete/.test(document.readyState)) {
+                setTimeout(_onload, 10);
+                return
+            }
+            if (!window.__adroll_loaded) {
+                __adroll_loaded = true;
+                setTimeout(_onload, 50);
+                return
+            }
+            var scr = document.createElement("script");
+            var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+            scr.setAttribute('async', 'true');
+            scr.type = "text/javascript";
+            scr.src = host + "/j/roundtrip.js";
+            ((document.getElementsByTagName('head') || [null])[0] ||
+                document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+        };
+        if (window.addEventListener) {
+            window.addEventListener('load', _onload, false);
+        }
+        else {
+            window.attachEvent('onload', _onload)
+        }
+    }());
+    </script><!--if lt IE 9script(src="//html5shim.googlecode.com/svn/trunk/html5.js")-->
+
+</head>
+<body id="login" class="unloaded">
+<div class="wrapper">
+    <header>
+        <nav role="navigation" class="navbar navbar-default">
+            <div class="container"><!-- Brand and toggle get grouped for better mobile display -->
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse"><!-- For 404 page-->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/login.html" class="login-top active">登录<span></span></a></li>
+                        <li class="signup-top-parent"><a href="/regist.html" class="signup-top">注册<span></span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="login">
+        <form action="/login" method="post" class="container offset1 loginform">
+            <div id="owl-login">
+                <div class="eyes"></div>
+                <div class="arm-up-right"></div>
+                <div class="arm-up-left"></div>
+                <div class="arm-down-left"></div>
+                <div class="arm-down-right"></div>
+            </div>
+            <div class="pad">
+                <!--<input type="hidden" name="_csrf" value="kb8CN2Mb-Ao80rbzly4trlOdstgy75ugVBao">-->
+                <div class="control-group">
+                    <div class="controls">
+                        <label for="email" class="control-label fa fa-envelope"></label>
+                        <input id="email" type="email" name="email" placeholder="Email" tabindex="1" autofocus="autofocus"
+                            required="" class="form-control input-medium">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <label for="password" class="control-label fa fa-asterisk"></label>
+                        <input id="password" type="password" name="password" placeholder="Password" tabindex="2"
+                            required="" class="form-control input-medium">
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <a href="/forgot/" tabindex="5"
+                    class="btn pull-left btn-link text-muted">Forgot password?</a>
+                <a href="/regist.html" tabindex="6" class="btn btn-link text-muted">注册</a>
+                <button type="submit" tabindex="4" class="btn btn-primary">登录</button>
+            </div>
+            <div class="form-actions">
+                <a class="btn pull-left btn-link text-muted">快速登录</a>
+                <a type="button" href="https://github.com/login/oauth/authorize?client_id=Iv1.c17fb30c27305fb1&redirect_url=http://localhost:8080/callback&scope=user&state=1">
+                    <img src="/img/github.png" style=" width: 35px; height: 35px; margin-right: 130px;"/>
+                </a>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+</body>
+</html>
